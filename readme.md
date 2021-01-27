@@ -39,7 +39,7 @@ hoisting is the js behaviour that let us use to access variable and functions be
 x = 10;
 console.log(x); // 10
 call_me(); // some one called me
-function call_me() { 
+function call_me() {
 	console.log('some one called me');
 }
 console.log(y); // undefined
@@ -81,7 +81,7 @@ const fun = function foo(parameter) {
 
 ## 5. Window and Undefined
 
-Window -> window is the global object that provides object, methods and properties that are useful and access by the user. setTimeOut, console all belongs to window and when we create variables in global execution context it is automatically assigned to window. another useful keyword is **this** that refers to the object from where it was called in global exection context **this** refers all the window's object.
+Window -> window is the global object that provides object, methods and properties that are useful and access by the user. setTimeout, console all belongs to window and when we create variables in global execution context it is automatically assigned to window. another useful keyword is **this** that refers to the object from where it was called in global exection context **this** refers all the window's object.
 
 ```javascript
 var a = 10;
@@ -137,10 +137,82 @@ let a = 10;
 
 ## 8. Block Scope
 
+block or compound statement is defined by curly braces {} it is used to combine multiple statements in group. variables and functions can access from that block that is know as block scope.
+
+```javascript
+{
+	var a = 10;
+	let b = 20;
+	const c = 30;
+}
+console.log(a); // 10
+console.log(b); // reference error
+console.log(c); // reference error
+```
+
+**shadow** -> it occurs when same variable of outerblock delcared inside the inner block then that inner block element shadow it's value and it effects that value in the case of compound statement.
+
+```javascript
+var a = 10;
+{
+	var a = 20;
+	console.log(a); // 20
+}
+console.log(a); //20
+```
+
 ## 9. Closures
 
-## 10. setTimeOut
+function bind with that lexical environment or we can say that when a function remember it's parent laxical scope even parent function has been executed is know as closures.
+
+```javascript
+function call() {
+	let x = 'hello';
+	return function y() {
+		console.log(x);
+	};
+}
+const c = call(); // ƒ y() {
+// console.log(x);
+// }
+c(); // hello
+```
+
+## 10. setTimeout
+
+it is a method that invokes defined function after given time. it take 2 arguments first is function and second it time in ms. setTimeout has trust issues because of call stack. setTimeout is an web api. it is wait until it's time has been arrived until it wait into callback queue and when time has been arrived and call stack has no more code to executed checked by event loop it put's that code into call stack and execut it.so if we call a function after 5 milliseconds but our call stack taking extra 10 millisecond to execute all the code then total time to execute function inside setTimeout would take 15 millisecond that's why it has trust issues.
+
+```javascript
+setTimeout(function call() {
+	console.log('hello');
+}, 5);
+console.log('wow');
+
+output would be ->
+	wow
+	hello
+```
 
 ## 11. Asynchronous JS
+**javascript runtime environment** contains javascript engine, web apis,callback stack, event loop, microtask queue, callback queue,heap and so on. we can think it as big container in which has many small container.
+![javascript Runtime Environment](js_runtime_environment.png)  
+some js engines with their browser ->
+Chakra -> Microsoft Edge
+SpiderMonkey -> Firfox
+V8 -> Chrome, Node.js, Deno
+JavaScriptCore -> Safari
+
 
 ## 12. JS Engine
+**JS Engine** is the programme written into the low level language. eg -> v8 written into the c++.
+functionality of Engine ->
+```
+		Code
+		  |
+		Parsing  ------------> Tokenization (convert into tokens) -> syntax parser(used to create abstract syntax tree)
+		  |					|	
+		Compilation	-----	      		|---> token<let> token<a> token<=> token<10>
+		  |		    |------> it could be in multiple phases. it optimized the code for better performance.
+		Execution --->has two components memory heap and callstack.
+```
+							
